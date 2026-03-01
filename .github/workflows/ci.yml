@@ -24,6 +24,11 @@ jobs:
     - name: Build solution
       run: dotnet build backend/src/RestaurantDashboard.sln --configuration Release --no-restore
     
+    - name: Restore and build frontend
+      run: |
+        dotnet restore frontend/RestaurantDashboard.Client/RestaurantDashboard.Client.csproj
+        dotnet build frontend/RestaurantDashboard.Client/RestaurantDashboard.Client.csproj --configuration Release --no-restore
+    
     - name: Restore dependencies (tests)
       run: dotnet restore backend/tests/RestaurantDashboard.Tests/RestaurantDashboard.Tests.csproj
     
