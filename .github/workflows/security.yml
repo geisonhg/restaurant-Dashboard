@@ -1,0 +1,32 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly on Sunday
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    
+    - name: Restore dependencies
+      run: dotnet restore backend/src/RestaurantDashboard.sln
+    
+    - name: Run dotnet format check
+      run: dotnet format --verify-no-changes --verbosity diagnostic backend/src/RestaurantDashboard.sln || true
+    
+    - name: Check for vulnerable dependencies
+      run: |
+        dotnet add package Microsoft.DependencyValidation.Analyzers --no-restore || true
+        dotnet list package --vulnerable

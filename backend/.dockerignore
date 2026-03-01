@@ -1,0 +1,17 @@
+**/.git
+**/.gitignore
+**/.vs
+**/bin
+**/obj
+**/Debug
+**/Release
+**/*.user
+**/.vscode
+**/.DS_Store
+**/Thumbs.db
+**/node_modules
+**/npm-debug.log
+**/package-lock.json
+**/.env
+**/.env.local
+**/TestResults

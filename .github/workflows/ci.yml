@@ -27,8 +27,16 @@ jobs:
     - name: Restore dependencies (tests)
       run: dotnet restore backend/tests/RestaurantDashboard.Tests/RestaurantDashboard.Tests.csproj
     
-    - name: Run tests
-      run: dotnet test backend/tests/RestaurantDashboard.Tests/RestaurantDashboard.Tests.csproj --configuration Release --no-build --verbosity normal
+    - name: Run tests with coverage
+      run: dotnet test backend/tests/RestaurantDashboard.Tests/RestaurantDashboard.Tests.csproj --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --logger trx --results-directory TestResults
+    
+    - name: Upload build artifacts
+      if: success()
+      uses: actions/upload-artifact@v3
+      with:
+        name: api-build
+        path: backend/src/RestaurantDashboard.Api/bin/Release/net8.0/
+        retention-days: 30
     
     - name: Upload test results
       if: always()
@@ -36,3 +44,4 @@ jobs:
       with:
         name: test-results
         path: '**/TestResults/'
+        retention-days: 7
