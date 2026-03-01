@@ -1,0 +1,36 @@
+@page "/dashboard/summary"
+@inject RestaurantDashboard.Client.Services.DashboardService DashboardService
+
+<h3>Dashboard Summary</h3>
+
+<div class="mb-3">
+    <label>From:</label>
+    <input type="date" @bind="from" class="form-control" />
+    <label class="mt-2">To:</label>
+    <input type="date" @bind="to" class="form-control" />
+    <button class="btn btn-primary mt-3" @onclick="Load">Load</button>
+</div>
+
+@if (summary != null)
+{
+    <table class="table table-striped">
+        <tr><th>From</th><td>@summary.From.ToShortDateString()</td></tr>
+        <tr><th>To</th><td>@summary.To.ToShortDateString()</td></tr>
+        <tr><th>Total Sales</th><td>@summary.TotalSales</td></tr>
+        <tr><th>Total Expenses</th><td>@summary.TotalExpenses</td></tr>
+        <tr><th>Total Tips</th><td>@summary.TotalTips</td></tr>
+        <tr><th>Net Profit</th><td>@summary.NetProfit</td></tr>
+        <tr><th>Tips %</th><td>@summary.TipsPercentOfSales</td></tr>
+    </table>
+}
+
+@code {
+    private DateTime? from;
+    private DateTime? to;
+    private RestaurantDashboard.Client.Models.DashboardSummaryDto? summary;
+
+    private async Task Load()
+    {
+        summary = await DashboardService.GetSummaryAsync(from, to);
+    }
+}

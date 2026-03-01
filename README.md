@@ -32,7 +32,8 @@ This project solves a real-world problem: restaurant managers spend countless ho
 
 ### Technology Stack
 - **Backend:** .NET 8 (C#), Entity Framework Core 9
-- **Frontend:** Blazor / React (TBD)
+- **Frontend:** Blazor WebAssembly (C#)
+
 - **Database:** SQL Server / PostgreSQL
 - **Reporting:** QuestPDF / iText7
 - **CI/CD:** GitHub Actions
@@ -98,6 +99,18 @@ dotnet run
 cd backend/tests/RestaurantDashboard.Tests
 dotnet test
 ```
+
+### Frontend
+
+First deliverable is a Blazor WebAssembly app located in `frontend/RestaurantDashboard.Client`. To build and run the frontend:
+
+```bash
+cd frontend/RestaurantDashboard.Client
+dotnet restore
+dotnet run
+```
+
+The client will launch at `http://localhost:5052` by default and expects the API running at `https://localhost:5001` (configured in `wwwroot/appsettings.json`).
 
 ### Docker Build
 
