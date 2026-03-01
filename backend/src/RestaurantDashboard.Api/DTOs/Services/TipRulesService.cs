@@ -14,7 +14,7 @@ namespace RestaurantDashboard.Api.Services
             await _db.TipRules.OrderByDescending(r => r.ValidFrom).ToListAsync();
 
         public Task<TipRule?> GetActiveAsync() =>
-            _db.TipRules.OrderByDescending(r => r.ValidFrom).FirstOrDefaultAsync(r => r.ValidFrom == null);
+            _db.TipRules.OrderByDescending(r => r.ValidFrom).FirstOrDefaultAsync(r => r.ValidTo == null);
 
         public Task<TipRule?> GetByIdAsync(Guid id) =>
             _db.TipRules.FirstOrDefaultAsync(x => x.Id == id);

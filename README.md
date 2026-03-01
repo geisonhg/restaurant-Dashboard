@@ -74,4 +74,28 @@ We’ll be sharing weekly updates and reflections as we progress through each sp
 
 ---
 
+## 🛠️ Developer quickstart
+
+Run the API locally (from repository root):
+
+```powershell
+cd backend/src/RestaurantDashboard.Api
+dotnet restore
+dotnet build
+dotnet run
+```
+
+Apply migrations (if needed) and seed the database: the application will run `MigrateAsync()` and seed during startup when run locally.
+
+Run tests:
+
+```powershell
+cd backend/tests/RestaurantDashboard.Tests
+dotnet test
+```
+
+Notes:
+- Some optional features in the project (`AutoMapper`, `FluentValidation`) require the corresponding NuGet packages to be installed. Add them via `dotnet add package` if you plan to use those features.
+
+
 

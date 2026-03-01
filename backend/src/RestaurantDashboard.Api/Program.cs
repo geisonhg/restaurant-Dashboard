@@ -3,7 +3,10 @@ using RestaurantDashboard.Api.DTOs.Services;
 using RestaurantDashboard.Api.DTOs.Services.Interfaces;
 using RestaurantDashboard.Api.Services;
 using RestaurantDashboard.Api.Services.Interfaces;
+using RestaurantDashboard.Api.Middleware;
 using RestaurantDashboard.Infrastructure.Data;
+using AutoMapper;
+using FluentValidation;
 
 
 
@@ -18,7 +21,8 @@ builder.Services.AddScoped<IExpensesService, ExpensesService>();
 builder.Services.AddScoped<IStaffService, StaffService>();
 builder.Services.AddScoped<ITipsService, TipsService>();
 builder.Services.AddScoped<ITipRulesService, TipRulesService>();
-builder.Services.AddScoped<IDashboardService, DashboardService>();
+// Dashboard application service will use repository for data access
+builder.Services.AddScoped<IDashboardService, DashboardAppService>();
 builder.Services.AddScoped<ISummaryService, SummaryService>();
 
 
@@ -32,7 +36,17 @@ builder.Services.AddDbContext<DashboardDbContext>(options =>
 // Health check
 builder.Services.AddHealthChecks();
 
+// Register repository
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+
+// AutoMapper and FluentValidation (optional packages required)
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 var app = builder.Build();
+
+// Global exception handling
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Middleware
 if (app.Environment.IsDevelopment())
@@ -44,7 +58,7 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<DashboardDbContext>();
-    // opcional: migrar automático
+    // opcional: migrar automï¿½tico
     await db.Database.MigrateAsync();
     await DbSeeder.SeedAsync(db);
 }
